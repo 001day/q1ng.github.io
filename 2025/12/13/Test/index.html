@@ -6,20 +6,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="这是我的php代码审计的第一个博客，于是打算从审计环境开始。俗话说万事开头难，话不多说，先手把手配个环境。 首先选择一个审计的thinkphp版本，这里我选择thinkphp5,原因是在github上已经有大佬完整的report,我们可以跟着师傅（这对初学者很友好）这里我建议用Composer来进行安装。我在wsl上已经安装好了  接下来下载thinkphp5.1.0 1composer crea">
+    <meta name="description" content="这是我的php代码审计的第一个博客，于是打算从审计环境开始。俗话说万事开头难，话不多说，先手把手配个环境。 首先选择一个审计的thinkphp版本，这里我选择thinkphp5,原因是在github上已经有大佬完整的report,我们可以跟着师傅（这对初学者很友好）这里我建议用Composer来进行安装。我在wsl上已经安装好了  接下来下载thinkphp5.0.15 1composer cre">
 <meta property="og:type" content="article">
 <meta property="og:title" content="thinkphp5代码审计（一）">
 <meta property="og:url" content="https://q1ng-li.github.io/2025/12/13/Test/index.html">
 <meta property="og:site_name" content="q1ng">
-<meta property="og:description" content="这是我的php代码审计的第一个博客，于是打算从审计环境开始。俗话说万事开头难，话不多说，先手把手配个环境。 首先选择一个审计的thinkphp版本，这里我选择thinkphp5,原因是在github上已经有大佬完整的report,我们可以跟着师傅（这对初学者很友好）这里我建议用Composer来进行安装。我在wsl上已经安装好了  接下来下载thinkphp5.1.0 1composer crea">
+<meta property="og:description" content="这是我的php代码审计的第一个博客，于是打算从审计环境开始。俗话说万事开头难，话不多说，先手把手配个环境。 首先选择一个审计的thinkphp版本，这里我选择thinkphp5,原因是在github上已经有大佬完整的report,我们可以跟着师傅（这对初学者很友好）这里我建议用Composer来进行安装。我在wsl上已经安装好了  接下来下载thinkphp5.0.15 1composer cre">
 <meta property="og:locale" content="ch_CN">
 <meta property="og:image" content="https://q1ng-li.github.io/images/image-20251213201956688.png">
 <meta property="og:image" content="https://q1ng-li.github.io/images/image-20251213205900342.png">
 <meta property="og:image" content="https://q1ng-li.github.io/images/image-20251213210121658.png">
 <meta property="og:image" content="https://q1ng-li.github.io/images/image-20251213210121658.png">
-<meta property="og:image" content="https://q1ng-li.github.io/images/image-20251213210818877.png">
 <meta property="article:published_time" content="2025-12-13T06:07:27.000Z">
-<meta property="article:modified_time" content="2025-12-14T06:11:48.086Z">
+<meta property="article:modified_time" content="2025-12-14T07:22:28.579Z">
 <meta property="article:author" content="q1ng">
 <meta property="article:tag" content="代码审计">
 <meta name="twitter:card" content="summary">
@@ -189,15 +188,15 @@
     <p>这是我的php代码审计的第一个博客，于是打算从审计环境开始。俗话说万事开头难，话不多说，先手把手配个环境。</p>
 <p>首先选择一个审计的thinkphp版本，这里我选择thinkphp5,原因是在github上已经有大佬完整的report,我们可以跟着师傅（这对初学者很友好）这里我建议用Composer来进行安装。我在wsl上已经安装好了</p>
 <p><img src="/images/image-20251213201956688.png" alt="image-20251213201956688"></p>
-<p>接下来下载thinkphp5.1.0</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">composer create-project topthink/think=5.1.0 tp510 --prefer-dist<br></code></pre></td></tr></table></figure>
+<p>接下来下载thinkphp5.0.15</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">composer create-project --prefer-dist topthink/think=5.0.15 tpdemo<br></code></pre></td></tr></table></figure>
 
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">php think run<br></code></pre></td></tr></table></figure>
 
 <p>在网页上就可以看到thinkphp的笑脸 :)</p>
 <p>下一步就是配置xdebug信息</p>
-<p>因为我的php版本是7.4，首先打开php.ini进行配置</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">[Xdebug]<br>zend_extension=D:/phpstudy_pro/Extensions/php/php7.4.3nts/ext/php_xdebug.dll<br>xdebug.collect_params=1<br>xdebug.collect_return=1<br>xdebug.auto_trace=Off<br>xdebug.trace_output_dir=D:/phpstudy_pro/Extensions/php_log/php7.4.3nts.xdebug.trace<br>xdebug.profiler_enable=Off<br>xdebug.profiler_output_dir=D:/phpstudy_pro/Extensions/php_log/php7.4.3nts.xdebug.profiler<br>xdebug.remote_enable=On<br>xdebug.remote_autostart=1<br>xdebug.remote_host=127.0.0.1<br>xdebug.remote_port=9000<br>xdebug.remote_handler=dbgp<br>xdebug.idekey = &quot;PHPSTORM&quot;<br></code></pre></td></tr></table></figure>
+<p>因为我的php版本是5.6，首先打开php.ini进行配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">[Xdebug]<br>zend_extension=D:/phpstudy_pro/Extensions/php/php5.6.9nts/ext/php_xdebug.dll<br>xdebug.collect_params=1<br>xdebug.collect_return=1<br>xdebug.auto_trace=Off<br>xdebug.trace_output_dir=D:/phpstudy_pro/Extensions/php_log/php5.6.9nts.xdebug.trace<br>xdebug.profiler_enable=Off<br>xdebug.profiler_output_dir=D:/phpstudy_pro/Extensions/php_log/php5.6.9nts.xdebug.profiler<br>xdebug.remote_enable=On<br>Xdebug.remote.autostart=1<br>xdebug.remote_host=127.0.0.1<br>xdebug.remote_port=9000<br>xdebug.remote_handler=dbgp<br>xdebug.idekey=&quot;PHPSTROM&quot;<br></code></pre></td></tr></table></figure>
 
 <p>接着是PHPSTORM</p>
 <p>先配置下服务器</p>
@@ -207,8 +206,7 @@
 <p>最后配置</p>
 <p><img src="/images/image-20251213210121658.png" alt="image-20251213210121658"></p>
 <p>在index.php下个断点，看看是否成功命中断点</p>
-<p><img src="/images/image-20251213210818877.png" alt="image-20251213210818877"></p>
-<p>成功命中！！！</p>
+<p>本地发现成功命中！！！</p>
 <p>接下来就可以愉快的审计代码了。</p>
 
   </div>
